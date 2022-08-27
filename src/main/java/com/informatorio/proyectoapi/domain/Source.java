@@ -1,10 +1,9 @@
 package com.informatorio.proyectoapi.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +15,9 @@ public class Source {
     private String name;
     private String code;
     private LocalDate createdAt;
+
+    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles= new ArrayList<>();
 
     public Source(String name, String code, LocalDate createdAt) {
         this.name = name;
@@ -56,6 +58,14 @@ public class Source {
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void addArticle(Article article) {
+        articles.add(article);
     }
 
     @Override

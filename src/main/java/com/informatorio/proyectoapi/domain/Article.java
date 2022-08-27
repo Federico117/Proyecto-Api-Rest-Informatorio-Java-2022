@@ -23,6 +23,9 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Author author;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Source source;
+
     public Article(String title, String description, String url, String urlToImage, LocalDate publishedAt, String content) {
         this.title = title;
         this.description = description;
@@ -99,6 +102,14 @@ public class Article {
     public void setAuthor(Author author) {
         System.out.println("HASTA ACA LLEGA EL CODIGO SET_AUTHOR");
         this.author = author;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     @Override

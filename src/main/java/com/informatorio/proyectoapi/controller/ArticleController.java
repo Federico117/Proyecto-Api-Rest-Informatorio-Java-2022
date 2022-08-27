@@ -54,10 +54,12 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/article/{idArticle}/author")
-    public Article addAuthorToArticle(@PathVariable Long idArticle, @RequestBody Long idAuthor){
+    public ArticleDto addAuthorToArticle(@PathVariable Long idArticle, @RequestBody Long idAuthor){
         Author author =authorRepository.findById(idAuthor).orElse(null);//se debe agregar este autor que se encontro al articulo
         Article article = articleRepository.findById(idArticle).get();
         article.setAuthor(author);
-        return articleRepository.save(article);
+        return articleConverter.toDto(articleRepository.save(article));
     }
+
+
 }

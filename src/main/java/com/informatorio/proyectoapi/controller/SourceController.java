@@ -29,7 +29,7 @@ public class SourceController {
     }*/
 
     @GetMapping(value = "/source")
-    public List<Source> getSourcesfafgdfasd(@RequestParam(required = false) String palabra){
+    public List<Source> getAllSourcesByArg(@RequestParam(required = false) String palabra){
         if(palabra != null){
             return sourceRepository.findAll().stream().filter(x -> x.getName().toLowerCase().contains(palabra.toLowerCase())).collect(Collectors.toList());
         }else{
@@ -45,5 +45,20 @@ public class SourceController {
     @DeleteMapping(value = "/source/{id_source}")
     public void deleteSourceById(@PathVariable Long id_source){
         sourceRepository.deleteById(id_source);
+    }
+
+    @PutMapping(value = "/source")
+    public Source modifiSource(@RequestBody Source source){
+        Source sourceToModif = sourceRepository.findById(source.getId()).orElse(null);
+        if(source.getName() != null){
+            sourceToModif.setName(source.getName());
+        }
+        if(source.getCode() != null){
+            sourceToModif.setCode(source.getCode());
+        }
+        if(source.getCreatedAt() != null){
+            source.setCreatedAt(source.getCreatedAt());
+        }
+        return sourceRepository.save(sourceToModif);
     }
 }

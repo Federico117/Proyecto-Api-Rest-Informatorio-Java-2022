@@ -29,9 +29,15 @@ public class AuthorController {
         this.authorConverter = authorConverter;
     }
 
-    @GetMapping(value = "/author/{id_author}")
+    /*@GetMapping(value = "/author/{id_author}")
     public AuthorDto getAuthor(@PathVariable Long id_author){
         return authorConverter.toDto(authorRepository.findById(id_author).orElse(null));
+    }*/
+
+    //este tenia problemas para devolver los entitis asi que lo cambie para que devuelva el string del title del articulo del author q se le pasaba o los ids delos arts
+    @GetMapping(value = "/author/{id_author}")
+    public List<Long> getAuthor(@PathVariable Long id_author){
+        return authorRepository.findById(id_author).orElse(null).getArticles().stream().map(x -> x.getId()).collect(Collectors.toList());
     }
 
     @GetMapping(value = "/author")
