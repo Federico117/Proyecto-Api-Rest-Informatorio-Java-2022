@@ -11,10 +11,12 @@ import java.util.List;
 public class ArticleConverter {
 
     private AuthorConverter authorConverter;
+    private SourceConverter sourceConverter;
 
     @Autowired
-    public ArticleConverter(AuthorConverter authorConverter) {
+    public ArticleConverter(AuthorConverter authorConverter, SourceConverter sourceConverter) {
         this.authorConverter = authorConverter;
+        this.sourceConverter = sourceConverter;
     }
 
     /*public List<ArticleDto> toDtos(List<Article> articles){
@@ -40,6 +42,9 @@ public class ArticleConverter {
                 article.getContent());
         if(article.getAuthor() != null){
             articulo.setAuthorDto(authorConverter.toDto(article.getAuthor()));
+        }
+        if(article.getSource() != null){
+            articulo.setSourceDto(sourceConverter.toDto(article.getSource()));
         }
         return articulo;
         //al llamar al ultimo metodo para convertir la entidad que trata de convertir no tiene author asignado por eso da null pointer entonces que hacemos?

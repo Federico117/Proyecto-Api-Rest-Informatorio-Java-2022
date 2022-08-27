@@ -38,8 +38,8 @@ public class SourceController {
     }
 
     @GetMapping(value = "/source/{id_source}")
-    public Source getSourcesById(@PathVariable Long id_source){
-        return sourceRepository.findById(id_source).orElse(null);
+    public List<Long> getSourcesById(@PathVariable Long id_source){
+        return sourceRepository.findById(id_source).orElse(null).getArticles().stream().map(x->x.getId()).collect(Collectors.toList());
     }
 
     @DeleteMapping(value = "/source/{id_source}")

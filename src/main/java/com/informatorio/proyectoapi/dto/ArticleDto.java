@@ -14,6 +14,8 @@ public class ArticleDto {
 
     private AuthorDto authorDto;
 
+    private SourceDto sourceDto;
+
     public ArticleDto(Long id, String title, String description, String url, String urlToImage, LocalDate publishedAt, String content) {
         this.id = id;
         this.title = title;
@@ -89,5 +91,13 @@ public class ArticleDto {
 
     public void setAuthorDto(AuthorDto authorDto) {
         this.authorDto = authorDto;
+    }
+
+    public SourceDto getSourceDto() {
+        return sourceDto;
+    }
+
+    public void setSourceDto(SourceDto sourceDto) {
+        this.sourceDto = sourceDto;
     }
 }
