@@ -3,13 +3,16 @@ package com.informatorio.proyectoapi.controller;
 import com.informatorio.proyectoapi.converter.AuthorConverter;
 import com.informatorio.proyectoapi.domain.Article;
 import com.informatorio.proyectoapi.domain.Author;
+import com.informatorio.proyectoapi.domain.Source;
 import com.informatorio.proyectoapi.dto.AuthorDto;
+import com.informatorio.proyectoapi.dto.SourceDto;
 import com.informatorio.proyectoapi.repository.ArticleRepository;
 import com.informatorio.proyectoapi.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,17 +43,42 @@ public class AuthorController {
         return authorRepository.findById(id_author).orElse(null).getArticles().stream().map(x -> x.getId()).collect(Collectors.toList());
     }
 
+    /*@GetMapping(value = "/author")
+    public List<AuthorDto> getAuthor(@RequestParam(required = false) String fecha){
+        if(fecha != null){
+            LocalDate date = LocalDate.parse(fecha);
+            return authorConverter.toDtos(authorRepository.devolverporfecha(date));
+        }
+        return authorConverter.toDtos(authorRepository.findAll());
+    }*/
     @GetMapping(value = "/author")
-    public List<AuthorDto> getAuthor(){
+    public List<AuthorDto> getAllAuthors(@RequestParam(required = false) String fecha,
+                                         @RequestParam(required = false) String palabra){
+        if(fecha != null && palabra != null){
+            LocalDate date = LocalDate.parse(fecha);
+            List<Author> dateFilteredList = authorRepository.devolverporfecha(date);
+            return dateFilteredList.stream().filter(x -> x.getFullName().toLowerCase().contains(palabra.toLowerCase())).map(x->authorConverter.toDto(x)).collect(Collectors.toList());
+        }else if(fecha != null){
+            LocalDate date = LocalDate.parse(fecha);
+            return authorConverter.toDtos(authorRepository.devolverporfecha(date));
+        } else if (palabra != null) {
+            return authorRepository.findAll().stream().filter(x -> x.getFullName().toLowerCase().contains(palabra.toLowerCase())).map(x->authorConverter.toDto(x)).collect(Collectors.toList());
+        }
         return authorConverter.toDtos(authorRepository.findAll());
     }
 
     @PostMapping(value = "/author")
-    public Author createAutor(@RequestBody Author author){
+    public AuthorDto createAutor(@RequestBody AuthorDto author){
+        /*este metodo tambien actualiza los valores de un entity existente
+        cuando le pasamos un id, no deberia porque para eso esta el putmapping
+        para evitar que pase eso setteo el id que recibe a null
+         */
+        if(author.getId() != null)author.setId(null);
+        Author authorToSave = authorConverter.toEntity(author);
         if(author.getCreationDate() == null){
-            author.setCreationDate(LocalDate.now());
+            authorToSave.setCreationDate(LocalDate.now());
         }
-        return authorRepository.save(author);
+        return authorConverter.toDto(authorRepository.save(authorToSave));
     }
 
     //esto no va
@@ -73,5 +101,27 @@ public class AuthorController {
     @DeleteMapping(value = "/author/{id_author}")
     public void deleteAuthorById(@PathVariable Long id_author){
         authorRepository.deleteById(id_author);
+    }
+
+    /*pense que este metodo iba funcionar de manera errornea si no le pasabos un id o le pasabamos uno no existente
+     iba a crear un nuevo entity pero no porque lo que hace es buscar uno existente segun el
+     id que recibe de la request y modificar sus campos si los que recibe no son nulos
+     */
+    @PutMapping(value = "/author")
+    public AuthorDto modifyAuthor(@RequestBody Author source){
+        Author authorToModify = authorRepository.findById(source.getId()).orElse(null);
+        if(source.getName() != null){
+            authorToModify.setName(source.getName());
+        }
+        if(source.getLastName() != null){
+            authorToModify.setLastName(source.getLastName());
+        }
+        if(source.getFullName() != null){
+            authorToModify.setFullName(source.getFullName());
+        }
+        if(source.getCreationDate() != null){
+            authorToModify.setCreationDate(source.getCreationDate());
+        }
+        return authorConverter.toDto(authorRepository.save(authorToModify));
     }
 }

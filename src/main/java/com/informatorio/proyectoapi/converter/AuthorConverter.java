@@ -24,4 +24,7 @@ public class AuthorConverter {
                 author.getCreationDate());
     }
 
+    public Author toEntity(AuthorDto authorDto){
+        return new Author(authorDto.getId(), authorDto.getName(), authorDto.getLastName(), authorDto.getFullName(), authorDto.getCreationDate());
+    }
 }
