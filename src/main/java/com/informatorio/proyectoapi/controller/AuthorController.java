@@ -69,4 +69,9 @@ public class AuthorController {
         return authorConverter.toDto(author);
 
     }
+
+    @DeleteMapping(value = "/author/{id_author}")
+    public void deleteAuthorById(@PathVariable Long id_author){
+        authorRepository.deleteById(id_author);
+    }
 }

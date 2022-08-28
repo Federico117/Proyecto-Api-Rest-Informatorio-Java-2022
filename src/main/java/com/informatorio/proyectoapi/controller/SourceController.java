@@ -1,6 +1,8 @@
 package com.informatorio.proyectoapi.controller;
 
+import com.informatorio.proyectoapi.converter.SourceConverter;
 import com.informatorio.proyectoapi.domain.Source;
+import com.informatorio.proyectoapi.dto.SourceDto;
 import com.informatorio.proyectoapi.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +14,17 @@ import java.util.stream.Collectors;
 public class SourceController {
 
     private SourceRepository sourceRepository;
+    private SourceConverter sourceConverter;
 
     @Autowired
-    public SourceController(SourceRepository sourceRepository) {
+    public SourceController(SourceRepository sourceRepository, SourceConverter sourceConverter) {
         this.sourceRepository = sourceRepository;
+        this.sourceConverter = sourceConverter;
     }
 
     @PostMapping(value = "/source")
-    public Source createSource(@RequestBody Source source){
-        return sourceRepository.save(source);
+    public SourceDto createSource(@RequestBody Source source){
+        return sourceConverter.toDto(sourceRepository.save(source));
     }
 
     /*@GetMapping(value = "/source")
@@ -29,17 +33,17 @@ public class SourceController {
     }*/
 
     @GetMapping(value = "/source")
-    public List<Source> getAllSourcesByArg(@RequestParam(required = false) String palabra){
+    public List<SourceDto> getAllSourcesByArg(@RequestParam(required = false) String palabra){
         if(palabra != null){
-            return sourceRepository.findAll().stream().filter(x -> x.getName().toLowerCase().contains(palabra.toLowerCase())).collect(Collectors.toList());
+            return sourceRepository.findAll().stream().filter(x -> x.getName().toLowerCase().contains(palabra.toLowerCase())).map(x->sourceConverter.toDto(x)).collect(Collectors.toList());
         }else{
-            return sourceRepository.findAll();
+            return sourceRepository.findAll().stream().map(y->sourceConverter.toDto(y)).collect(Collectors.toList());
         }
     }
 
     @GetMapping(value = "/source/{id_source}")
-    public List<Long> getSourcesById(@PathVariable Long id_source){
-        return sourceRepository.findById(id_source).orElse(null).getArticles().stream().map(x->x.getId()).collect(Collectors.toList());
+    public SourceDto getSourcesById(@PathVariable Long id_source){
+        return sourceConverter.toDto(sourceRepository.findById(id_source).orElse(null));
     }
 
     @DeleteMapping(value = "/source/{id_source}")
@@ -48,7 +52,7 @@ public class SourceController {
     }
 
     @PutMapping(value = "/source")
-    public Source modifiSource(@RequestBody Source source){
+    public SourceDto modifiSource(@RequestBody Source source){
         Source sourceToModif = sourceRepository.findById(source.getId()).orElse(null);
         if(source.getName() != null){
             sourceToModif.setName(source.getName());
@@ -59,6 +63,6 @@ public class SourceController {
         if(source.getCreatedAt() != null){
             source.setCreatedAt(source.getCreatedAt());
         }
-        return sourceRepository.save(sourceToModif);
+        return sourceConverter.toDto(sourceRepository.save(sourceToModif));
     }
 }

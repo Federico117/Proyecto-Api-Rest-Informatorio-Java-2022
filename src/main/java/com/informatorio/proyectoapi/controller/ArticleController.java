@@ -76,5 +76,13 @@ public class ArticleController {
         return articleConverter.toDto(articleRepository.save(article));
     }
 
-
+    @DeleteMapping(value = "/article/{idArticle}")
+    public void deleteArticleById(@PathVariable Long idArticle){
+        Article articleToRemove = articleRepository.findById(idArticle).orElse(null);
+        //no supe como hacer para borrar un articulo sin que se borre su fuente y author asi que actualizo a null esos campos
+        articleToRemove.setAuthor(null);
+        articleToRemove.setSource(null);
+        articleRepository.save(articleToRemove);
+        articleRepository.deleteById(idArticle);
+    }
 }
