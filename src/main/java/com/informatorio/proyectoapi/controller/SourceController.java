@@ -5,6 +5,8 @@ import com.informatorio.proyectoapi.domain.Source;
 import com.informatorio.proyectoapi.dto.SourceDto;
 import com.informatorio.proyectoapi.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,8 @@ public class SourceController {
     }
 
     @PostMapping(value = "/source")
-    public SourceDto createSource(@RequestBody Source source){
-        return sourceConverter.toDto(sourceRepository.save(source));
+    public ResponseEntity<SourceDto> createSource(@RequestBody Source source){
+        return new ResponseEntity<>(sourceConverter.toDto(sourceRepository.save(source)), HttpStatus.CREATED);
     }
 
     /*@GetMapping(value = "/source")

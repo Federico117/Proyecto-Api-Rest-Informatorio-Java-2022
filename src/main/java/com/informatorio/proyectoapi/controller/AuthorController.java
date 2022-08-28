@@ -71,17 +71,13 @@ public class AuthorController {
     }
 
     @PostMapping(value = "/author")
-    public AuthorDto createAutor(@RequestBody AuthorDto author){
-        /*este metodo tambien actualiza los valores de un entity existente
-        cuando le pasamos un id, no deberia porque para eso esta el putmapping
-        para evitar que pase eso setteo el id que recibe a null
-         */
+    public ResponseEntity<AuthorDto> createAutor(@RequestBody @Valid AuthorDto author){
         if(author.getId() != null)author.setId(null);
         Author authorToSave = authorConverter.toEntity(author);
         if(author.getCreationDate() == null){
             authorToSave.setCreationDate(LocalDate.now());
         }
-        return authorConverter.toDto(authorRepository.save(authorToSave));
+        return new ResponseEntity<>(authorConverter.toDto(authorRepository.save(authorToSave)), HttpStatus.CREATED);
     }
 
     //esto no va
@@ -106,10 +102,7 @@ public class AuthorController {
         authorRepository.deleteById(id_author);
     }
 
-    /*pense que este metodo iba funcionar de manera errornea si no le pasabos un id o le pasabamos uno no existente
-     iba a crear un nuevo entity pero no porque lo que hace es buscar uno existente segun el
-     id que recibe de la request y modificar sus campos si los que recibe no son nulos
-     */
+
     @PutMapping(value = "/author")
     public AuthorDto modifyAuthor(@RequestBody Author source){
         Author authorToModify = authorRepository.findById(source.getId()).orElse(null);

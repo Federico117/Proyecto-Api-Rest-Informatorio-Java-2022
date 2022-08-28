@@ -1,0 +1,442 @@
+{
+	"info": {
+		"_postman_id": "fbc754ed-3ebe-4c8a-9ed1-16df36fade9d",
+		"name": "ProyectoApiRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Article",
+			"item": [
+				{
+					"name": "Create a Article",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"Qué aumentos de tarifas y precios se esperan para los próximos meses\",\r\n    \"description\":\"La segmentación en los servicios y la quita de subsidios impactarán en un grupo de usuarios y en las expectativas. También se proyectan subas en agua, prepagas, expensas y alquileres, además de los incrementos estacionales\",\r\n    \"url\":\"https://www.infobae.com/economia/2022/08/28/la-inflacion-que-viene-que-aumentos-de-precios-y-tarifas-se-esperan-para-los-proximos-meses/\",\r\n    \"urlToImage\":\"https://www.infobae.com/new-resizer/DG3mY0IDv9yPyaxbXe1ZXk016uM=/992x661/filters:format(webp):quality(85)/cloudfront-us-east-1.images.arcpublishing.com/infobae/Y72FLEK65H2GE33CDQHG3DN4DM.jpg\",\r\n    \"content\":\"Luego de los picos de inflación mensual de 6,7% en marzo y 7,4% en julio, los analistas económicos descartan que en los próximos meses se puedan observarse niveles mensuales inferiores a 5% y ya proyectan una tasa anual para fin de año por encima del 90%. En este contexto de subas de precios, se destacan los aumentos esperados en los servicios de electricidad, gas y agua para los usuarios que pierdan los subsidios, más otros autorizados en los rubros regulados, como medicina prepaga.El sendero de aumentos de los servicios públicos de los próximos meses dependerá de cuándo comiencen a retirarse los subsidios para los usuarios de mayor poder adquisitivo, los que no se hayan anotado en el registro y los que excedan los topes de consumo subsidiado (cuyos detalles en el caso del gas aun no fueron oficializados). El plazo previsto en los anuncios realizados por el Gobierno era a partir del 1° de septiembre, pero aun no fueron instrumentados los nuevos cuadros tarifarios, por lo tanto las empresas distribuidoras ya anticiparon que puede haber demoras en la facturación con el esquema segmentado.La inflación de agosto tiene un piso de 6% y para septiembre puede haber un impacto menor de tarifas de electricidad y gas. A priori la proyección para el mes próximo es en torno a 6 pero lo veremos más adelante. Hacienda cálculos, para que la inflación a fin de año llegue a 100% tenés que tener 6,5% mensual de agosto en adelante”, señaló Lorenzo Sigaut Gravina, director de Análisis Macroeconómico de Equilibra.Para agendaregmentación de tarifas: Según los anuncios del Gobierno el pasado 16 de agosto, la quita de subsidios a los servicios de electricidad y gas natural se comenzaría a aplicar en septiembre, aunque las empresas aun no cuentan con los nuevos cuadros tarifarios.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/article",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Author to Article",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "1",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/article/1/author",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article",
+								"1",
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Article By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/article/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Articles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/article",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Articles by title or description",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/article?palabra=",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article"
+							],
+							"query": [
+								{
+									"key": "palabra",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Source To Article",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "1",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/article/1/source",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article",
+								"1",
+								"source"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prueba de Borrado de articulo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/article/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"article",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Author",
+			"item": [
+				{
+					"name": "Create An Author",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Ximena\",\r\n    \"lastName\":\"Casas\",\r\n    \"fullName\":\"Ximena Casas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/author",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "este se uso para asignar un articulo del body a u author revisar luego",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[13]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/author/11/article",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"author",
+								"11",
+								"article"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/author/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"author",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Authors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/author",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los autores segun texto en fullname mayor a 3 caracteres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/author?palabra=xim",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"author"
+							],
+							"query": [
+								{
+									"key": "palabra",
+									"value": "xim"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Author By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify An Author",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1,\r\n    \"name\":\"Xime\",\r\n    \"fullName\":\"Ximena Casas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/author",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"author"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Source",
+			"item": [
+				{
+					"name": "Create A Source",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Info Bae\",\r\n    \"code\":\"info-bae\",\r\n    \"createdAt\":\"2002-09-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/source",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"source"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Sources",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/source",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"source"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Source Fields",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":3,\r\n    \"name\":\"modificacion a nombre\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/source",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"source"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete A Source",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/source/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"source",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

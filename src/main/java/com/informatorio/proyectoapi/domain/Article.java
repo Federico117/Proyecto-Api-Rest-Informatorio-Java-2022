@@ -18,6 +18,8 @@ public class Article {
     private String url;
     private String urlToImage;
     private LocalDate publishedAt;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

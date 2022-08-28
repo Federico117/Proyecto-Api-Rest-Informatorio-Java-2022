@@ -49,4 +49,14 @@ public class ArticleConverter {
         return articulo;
         //al llamar al ultimo metodo para convertir la entidad que trata de convertir no tiene author asignado por eso da null pointer entonces que hacemos?
     }
+
+    public Article toEntity(ArticleDto articleDto){
+        Article article = new Article(articleDto.getTitle(),
+                                        articleDto.getDescription(),
+                                        articleDto.getUrl(),
+                                        articleDto.getUrlToImage(),
+                                        articleDto.getPublishedAt(),
+                                        articleDto.getContent());
+        return article;
+    }
 }

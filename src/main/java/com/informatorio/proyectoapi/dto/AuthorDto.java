@@ -1,11 +1,17 @@
 package com.informatorio.proyectoapi.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 public class AuthorDto {
     private Long id;
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String lastName;
+
+    @NotBlank
     private String fullName;
     private LocalDate creationDate;
 

@@ -11,14 +11,18 @@ import com.informatorio.proyectoapi.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Validated
 @RestController
 public class ArticleController {
 
@@ -41,7 +45,11 @@ public class ArticleController {
 
     //ESTE FUNCIONA CON LOS ARTICCLES QUE NO TIENEN ASIGNADO UN AUTHOR PORQUE SERA?
     @GetMapping(value = "/article")
-    public List<ArticleDto> getArticle(){
+    public List<ArticleDto> getArticle(@Valid @Size(min=4) @RequestParam(required = false) String palabra){
+        //return articleRepository.findAll().stream().map(x->articleConverter.toDto(x)).collect(Collectors.toList());
+        if(palabra != null){
+            return articleRepository.devolverPorPalabraEnTituloYDescription(palabra).stream().map(x->articleConverter.toDto(x)).collect(Collectors.toList());
+        }
         return articleRepository.findAll().stream().map(x->articleConverter.toDto(x)).collect(Collectors.toList());
     }
 
@@ -54,12 +62,14 @@ public class ArticleController {
         return articleConverter.toDto(articleRepository.findById(id_article).orElse(null));
     }
 
-    @PostMapping(value = "/article")
-    public Article createArticle(@RequestBody Article article){
-        Article articleToSave = article;
 
-        articleToSave.setPublishedAt(LocalDate.now());
-        return articleRepository.save(articleToSave);
+    @PostMapping(value = "/article")
+    public ResponseEntity<ArticleDto> createArticle(@RequestBody ArticleDto article){
+        Article articleToSave = articleConverter.toEntity(article);
+        if(article.getPublishedAt() == null){
+            articleToSave.setPublishedAt(LocalDate.now());
+        }
+        return new ResponseEntity<>(articleConverter.toDto(articleRepository.save(articleToSave)),HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/article/{idArticle}/author")
@@ -72,7 +82,7 @@ public class ArticleController {
 
     @PostMapping(value = "/article/{idArticle}/source")
     public ArticleDto addSourceToArticle(@PathVariable Long idArticle, @RequestBody Long idSource){
-        Source source = sourceRepository.findById(idSource).orElse(null);//se debe agregar este autor que se encontro al articulo
+        Source source = sourceRepository.findById(idSource).orElse(null);//se debe agregar este source que se encontro al articulo
         Article article = articleRepository.findById(idArticle).get();
         article.setSource(source);
         return articleConverter.toDto(articleRepository.save(article));
