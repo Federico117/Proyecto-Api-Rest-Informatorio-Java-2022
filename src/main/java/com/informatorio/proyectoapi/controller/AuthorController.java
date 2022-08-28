@@ -9,14 +9,20 @@ import com.informatorio.proyectoapi.dto.SourceDto;
 import com.informatorio.proyectoapi.repository.ArticleRepository;
 import com.informatorio.proyectoapi.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Validated
 @RestController
 public class AuthorController {
 
@@ -37,22 +43,19 @@ public class AuthorController {
         return authorConverter.toDto(authorRepository.findById(id_author).orElse(null));
     }*/
 
-    //este tenia problemas para devolver los entitis asi que lo cambie para que devuelva el string del title del articulo del author q se le pasaba o los ids delos arts
     @GetMapping(value = "/author/{id_author}")
-    public List<Long> getAuthor(@PathVariable Long id_author){
-        return authorRepository.findById(id_author).orElse(null).getArticles().stream().map(x -> x.getId()).collect(Collectors.toList());
+    public ResponseEntity<?> getAuthor(@PathVariable Long id_author){
+        if(authorRepository.findById(id_author).isPresent()){
+            AuthorDto authorDto = authorConverter.toDto(authorRepository.findById(id_author).get());
+            return new ResponseEntity<>(authorDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    /*@GetMapping(value = "/author")
-    public List<AuthorDto> getAuthor(@RequestParam(required = false) String fecha){
-        if(fecha != null){
-            LocalDate date = LocalDate.parse(fecha);
-            return authorConverter.toDtos(authorRepository.devolverporfecha(date));
-        }
-        return authorConverter.toDtos(authorRepository.findAll());
-    }*/
+    //aca me falta tratar si la request no pasa la validacion de la palabra de mayor a 3 letras
     @GetMapping(value = "/author")
-    public List<AuthorDto> getAllAuthors(@RequestParam(required = false) String fecha,
+    public List<AuthorDto> getAllAuthors(@RequestParam(required = false) String fecha,@Valid @Size(min = 4)
                                          @RequestParam(required = false) String palabra){
         if(fecha != null && palabra != null){
             LocalDate date = LocalDate.parse(fecha);

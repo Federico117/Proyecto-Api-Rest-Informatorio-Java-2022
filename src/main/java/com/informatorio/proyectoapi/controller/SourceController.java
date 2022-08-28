@@ -62,7 +62,7 @@ public class SourceController {
             sourceToModif.setCode(source.getCode());
         }
         if(source.getCreatedAt() != null){
-            source.setCreatedAt(source.getCreatedAt());
+            sourceToModif.setCreatedAt(source.getCreatedAt());
         }
         return sourceConverter.toDto(sourceRepository.save(sourceToModif));
     }

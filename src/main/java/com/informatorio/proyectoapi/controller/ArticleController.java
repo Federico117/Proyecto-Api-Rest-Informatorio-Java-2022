@@ -9,6 +9,8 @@ import com.informatorio.proyectoapi.repository.ArticleRepository;
 import com.informatorio.proyectoapi.repository.AuthorRepository;
 import com.informatorio.proyectoapi.repository.SourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -77,12 +79,13 @@ public class ArticleController {
     }
 
     @DeleteMapping(value = "/article/{idArticle}")
-    public void deleteArticleById(@PathVariable Long idArticle){
+    public ResponseEntity<?> deleteArticleById(@PathVariable Long idArticle){
         Article articleToRemove = articleRepository.findById(idArticle).orElse(null);
         //no supe como hacer para borrar un articulo sin que se borre su fuente y author asi que actualizo a null esos campos
         articleToRemove.setAuthor(null);
         articleToRemove.setSource(null);
         articleRepository.save(articleToRemove);
         articleRepository.deleteById(idArticle);
+        return new ResponseEntity<String>("elemento borrado", HttpStatus.NO_CONTENT);
     }
 }
